@@ -27,6 +27,12 @@ dependencies = [
 ]
 
 [[package]]
+name = "arc-swap"
+version = "1.7.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "69f7f8c3906b62b754cd5326047894316021dcfe5a194c8ea52bdd94934a3457"
+
+[[package]]
 name = "async-trait"
 version = "0.1.81"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -114,6 +120,7 @@ dependencies = [
  "axum",
  "color-eyre",
  "deadpool-postgres",
+ "deadpool-redis",
  "figment",
  "opentelemetry",
  "serde",
@@ -257,6 +264,20 @@ dependencies = [
 ]
 
 [[package]]
+name = "combine"
+version = "4.6.7"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "ba5a308b75df32fe02788e748662718f03fde005016435c444eea572398219fd"
+dependencies = [
+ "bytes 1.7.1",
+ "futures-core",
+ "memchr",
+ "pin-project-lite 0.2.14",
+ "tokio 1.40.0",
+ "tokio-util 0.7.11",
+]
+
+[[package]]
 name = "cpufeatures"
 version = "0.2.13"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -343,6 +364,16 @@ dependencies = [
  "tokio 1.40.0",
  "tokio-postgres 0.7.11",
  "tracing",
+]
+
+[[package]]
+name = "deadpool-redis"
+version = "0.16.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "1ed4f481f6a4770b95e09b91e183ee5ed6e1d4a34c0b09814012b3ee5e585f70"
+dependencies = [
+ "deadpool",
+ "redis",
 ]
 
 [[package]]
@@ -821,6 +852,34 @@ dependencies = [
 ]
 
 [[package]]
+name = "num-bigint"
+version = "0.4.6"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "a5e44f723f1133c9deac646763579fdb3ac745e418f2a7af9cd0c431da1f20b9"
+dependencies = [
+ "num-integer",
+ "num-traits",
+]
+
+[[package]]
+name = "num-integer"
+version = "0.1.46"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "7969661fd2958a5cb096e56c8e1ad0444ac2bbcd0061bd28660485a44879858f"
+dependencies = [
+ "num-traits",
+]
+
+[[package]]
+name = "num-traits"
+version = "0.2.19"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "071dfc062690e90b734c0b2273ce72ad0ffa95f0c74596bc250dcfd960262841"
+dependencies = [
+ "autocfg",
+]
+
+[[package]]
 name = "num_cpus"
 version = "1.16.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1221,6 +1280,27 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "ca3129af7b92a17112d59ad498c6f81eaf463253766b90396d39ea7a39d6613c"
 dependencies = [
  "rand_core 0.5.1",
+]
+
+[[package]]
+name = "redis"
+version = "0.26.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "e902a69d09078829137b4a5d9d082e0490393537badd7c91a3d69d14639e115f"
+dependencies = [
+ "arc-swap",
+ "async-trait",
+ "bytes 1.7.1",
+ "combine",
+ "futures-util",
+ "itoa",
+ "num-bigint",
+ "percent-encoding",
+ "pin-project-lite 0.2.14",
+ "ryu",
+ "tokio 1.40.0",
+ "tokio-util 0.7.11",
+ "url",
 ]
 
 [[package]]

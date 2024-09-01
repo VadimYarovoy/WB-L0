@@ -1,15 +1,18 @@
 use axum::Router;
-use deadpool_postgres::{Config, ManagerConfig, Pool, RecyclingMethod, Runtime};
+use deadpool_postgres::{Config, ManagerConfig, Pool as DbPool, RecyclingMethod, Runtime};
+use deadpool_redis::Pool as ChPool;
 use std::sync::Arc;
 use tokio_postgres::NoTls;
 use tower_http::trace::{self, TraceLayer};
 use tracing::Level;
 
 use crate::api;
-use crate::config::AppConfig;
+use crate::config::{AppConfig, CacheConfig};
 
 pub struct AppState {
-    pub pool: Pool,
+    pub pool: DbPool,
+    pub cache_pool: ChPool,
+    pub cache_ttl: u64,
 }
 
 impl AppState {
@@ -28,7 +31,23 @@ impl AppState {
             .create_pool(Some(Runtime::Tokio1), NoTls)
             .expect("Fildel to create db pool");
 
-        Arc::new(AppState { pool })
+        let cache_cfg = CacheConfig {
+            host: config.cache.host,
+            port: config.cache.port,
+            ttl: config.cache.ttl,
+        };
+
+        let redis_url = format!("redis://{}:{}", cache_cfg.host, cache_cfg.port);
+        let cfg = deadpool_redis::Config::from_url(redis_url);
+        let cache_pool = cfg.create_pool(Some(Runtime::Tokio1)).unwrap();
+
+        let cache_ttl = cache_cfg.ttl;
+
+        Arc::new(AppState {
+            pool,
+            cache_pool,
+            cache_ttl,
+        })
     }
 }
 
