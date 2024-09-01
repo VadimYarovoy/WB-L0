@@ -4,21 +4,17 @@ use axum::{
     response::{IntoResponse, Response},
     routing, Router,
 };
+use redis::{AsyncCommands, RedisError};
 use serde_json::Value;
 use std::sync::Arc;
 use tracing::{error, info};
 use validator::Validate;
-use redis::{AsyncCommands, RedisError};
 
 use super::dto;
 use crate::AppState;
 
 async fn get_order_by_id(Path(id): Path<i32>, State(state): State<Arc<AppState>>) -> Response {
-    let mut con = state
-        .cache_pool
-        .get()
-        .await
-        .unwrap();
+    let mut con = state.cache_pool.get().await.unwrap();
     let value: Result<String, RedisError> = con.get(id).await;
 
     if let Ok(val) = value {
