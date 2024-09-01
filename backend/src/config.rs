@@ -14,6 +14,7 @@ pub struct ServerConfig {
 pub struct AppConfig {
     pub server: ServerConfig,
     pub db: DbConfig,
+    pub cache: CacheConfig,
 }
 
 impl ServerConfig {
@@ -29,6 +30,13 @@ pub struct DbConfig {
     pub database: String,
     pub user: String,
     pub password: String,
+}
+
+#[derive(Deserialize, Debug)]
+pub struct CacheConfig {
+    pub host: String,
+    pub port: u16,
+    pub ttl: u64,
 }
 
 impl AppConfig {
