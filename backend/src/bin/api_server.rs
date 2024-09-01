@@ -1,12 +1,16 @@
-use axum::{
-    routing::get,
-    Router,
-};
+use tracing::info;
+
+use backend::AppConfig;
 
 #[tokio::main]
-async fn main() {
-    let app = Router::new().route("/", get(|| async { "Hello, World!" }));
+async fn main() -> color_eyre::Result<()> {
+    tracing_subscriber::fmt::init();
+    let config: AppConfig = AppConfig::figment().extract()?;
+    let addr = config.server.bind_addr();
+    let app = backend::app().await;
+    info!("SERVER: Starting");
 
-    let listener = tokio::net::TcpListener::bind("0.0.0.0:3000").await.unwrap();
+    let listener = tokio::net::TcpListener::bind(&addr).await?;
     axum::serve(listener, app).await.unwrap();
+    Ok(())
 }
