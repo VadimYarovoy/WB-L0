@@ -9,6 +9,7 @@ use crate::api;
 use crate::config::AppConfig;
 
 pub struct AppState {
+    #[allow(dead_code)] // not in use will be removed soon
     pub pool: Pool,
 }
 
