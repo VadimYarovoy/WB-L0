@@ -123,6 +123,7 @@ dependencies = [
  "deadpool-redis",
  "figment",
  "opentelemetry",
+ "redis",
  "serde",
  "serde_json",
  "serde_postgres",
@@ -1298,6 +1299,8 @@ dependencies = [
  "percent-encoding",
  "pin-project-lite 0.2.14",
  "ryu",
+ "sha1_smol",
+ "socket2",
  "tokio 1.40.0",
  "tokio-util 0.7.11",
  "url",
@@ -1455,6 +1458,12 @@ dependencies = [
  "ryu",
  "serde",
 ]
+
+[[package]]
+name = "sha1_smol"
+version = "1.0.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "bbfa15b3dddfee50a0fff136974b3e1bde555604ba463834a7eb7deb6417705d"
 
 [[package]]
 name = "sha2"

@@ -8,11 +8,28 @@ use serde_json::Value;
 use std::sync::Arc;
 use tracing::{error, info};
 use validator::Validate;
+use redis::{AsyncCommands, RedisError};
 
 use super::dto;
 use crate::AppState;
 
 async fn get_order_by_id(Path(id): Path<i32>, State(state): State<Arc<AppState>>) -> Response {
+    let mut con = state
+        .cache_pool
+        .get()
+        .await
+        .unwrap();
+    let value: Result<String, RedisError> = con.get(id).await;
+
+    if let Ok(val) = value {
+        info!("Take value with id = {} from cache", id);
+
+        let order: serde_json::Value = serde_json::from_str(&val).unwrap();
+        let _: () = con.expire(id, state.cache_ttl as i64).await.unwrap();
+
+        return (StatusCode::OK, Json(order)).into_response();
+    }
+
     let client = state.pool.get().await.unwrap();
 
     let row = client
@@ -23,6 +40,9 @@ async fn get_order_by_id(Path(id): Path<i32>, State(state): State<Arc<AppState>>
         Ok(row) => {
             info!("Take value with id = {} from db", id);
             let order: serde_json::Value = row.get(0);
+
+            let json_value = serde_json::to_string(&order).unwrap();
+            let _: () = con.set_ex(id, json_value, state.cache_ttl).await.unwrap();
 
             (StatusCode::OK, Json(order)).into_response()
         }
