@@ -1,0 +1,4 @@
+CREATE TABLE IF NOT EXISTS orders (
+    id SERIAL PRIMARY KEY,
+    order_data JSONB NOT NULL
+);
