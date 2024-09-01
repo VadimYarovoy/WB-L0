@@ -13,12 +13,22 @@ pub struct ServerConfig {
 #[derive(Deserialize, Debug)]
 pub struct AppConfig {
     pub server: ServerConfig,
+    pub db: DbConfig,
 }
 
 impl ServerConfig {
     pub fn bind_addr(&self) -> SocketAddr {
         SocketAddr::new(IpAddr::V4(Ipv4Addr::UNSPECIFIED), self.port)
     }
+}
+
+#[derive(Deserialize, Debug)]
+pub struct DbConfig {
+    pub host: String,
+    pub port: u16,
+    pub database: String,
+    pub user: String,
+    pub password: String,
 }
 
 impl AppConfig {
