@@ -1,12 +1,13 @@
+use std::sync::Arc;
+
 use axum::Router;
+
+use crate::AppState;
 
 pub mod orders;
 pub mod test;
 
-pub fn routes<S>() -> Router<S>
-where
-    S: Send + Sync + Clone + 'static,
-{
+pub fn routes() -> Router<Arc<AppState>> {
     Router::new()
         .nest("/test", test::routes())
         .nest("/orders", orders::routes())

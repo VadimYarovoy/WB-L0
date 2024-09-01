@@ -3,4 +3,4 @@ mod config;
 mod server;
 
 pub use config::AppConfig;
-pub use server::app;
+pub use server::{app, AppState};
