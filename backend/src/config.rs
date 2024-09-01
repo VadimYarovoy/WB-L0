@@ -1,5 +1,5 @@
 use figment::{
-    providers::{Format, Toml},
+    providers::{Env, Format, Toml},
     Figment, Provider,
 };
 use serde::Deserialize;
@@ -23,7 +23,9 @@ impl ServerConfig {
 
 impl AppConfig {
     pub fn figment() -> Figment {
-        Figment::new().join(Toml::file("config.toml"))
+        Figment::new()
+            .join(Toml::file("config.toml"))
+            .join(Env::prefixed("APP_").split("_"))
     }
 
     pub fn from<T: Provider>(provider: T) -> Result<Self, figment::Error> {

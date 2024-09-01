@@ -6,7 +6,7 @@ edition = "2021"
 [dependencies]
 axum = "0.7.5"
 color-eyre = "0.6.3"
-figment = { version = "0.10.19", features = ["toml"] }
+figment = { version = "0.10.19", features = ["env", "toml"] }
 serde = { version = "1.0.209", features = ["derive"] }
 tokio = { version = "1.40.0", features = ["full"] }
 tracing = "0.1.40"
